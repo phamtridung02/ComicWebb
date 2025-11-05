@@ -27,7 +27,7 @@ app.use(cookieParser(COOKIE_SECRET));
 
 
 app.use(cors({
-  origin: "http://localhost:5174", 
+  origin: "http://localhost:5173", 
   credentials: true                
 }));
 
