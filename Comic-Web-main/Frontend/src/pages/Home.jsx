@@ -12,16 +12,14 @@ export default function Home() {
         const res = await fetch("http://localhost:8080/truyen/truyenMoi");
         if (!res.ok) throw new Error("Không thể tải danh sách truyện");
         const data = await res.json();
-        const list = data.truyen?.result || data.truyen || [];
-        if (!Array.isArray(list)) throw new Error("Dữ liệu truyện không hợp lệ");
-        setComics(list);
+        setComics(data.truyen || []);
       } catch (err) {
-        console.error("❌ Lỗi khi tải truyện:", err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     }
+
     fetchComics();
   }, []);
 
@@ -29,33 +27,27 @@ export default function Home() {
   if (error) return <p className="text-red-500 text-center mt-10">{error}</p>;
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">📚 Truyện mới cập nhật</h1>
-      {comics.length === 0 ? (
-        <p className="text-center text-gray-500">Không có truyện nào để hiển thị 😢</p>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {comics.map((comic) => (
-            <Link
-              key={comic.TID}
-              to={`/truyen/${comic.TID}`}
-              className="block bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition"
-            >
-              <img
-                src={comic.AnhBia || "/default-cover.jpg"}
-                alt={comic.TenTruyen}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h2 className="font-semibold text-lg">{comic.TenTruyen}</h2>
-                <p className="text-sm text-gray-600 line-clamp-2">
-                  {comic.MoTa || "Chưa có mô tả"}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+    <div>
+      <h1 className="text-2xl font-bold mb-4 border-b pb-2">📚 Truyện mới cập nhật</h1>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {comics.map((comic) => (
+          <Link
+            key={comic.TID}
+            to={`/truyen/${comic.TID}`}
+            className="block bg-white shadow rounded overflow-hidden hover:shadow-lg transition"
+          >
+            <img
+              src={comic.AnhBia || "/default-cover.jpg"}
+              alt={comic.TenTruyen}
+              className="w-full h-56 object-cover"
+            />
+            <div className="p-2">
+              <h2 className="font-semibold text-sm line-clamp-2">{comic.TenTruyen}</h2>
+              <p className="text-xs text-gray-500">Tác giả: {comic.TacGia || "Đang cập nhật"}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
