@@ -224,10 +224,29 @@ async function layChiTietTruyen(TID) {
   }
 }
 
+async function danhSachTheLoai() {
+  try {
+    const sql = `
+      SELECT TLID, TenTheLoai, MoTa
+      FROM TheLoai
+      ORDER BY TenTheLoai ASC;
+    `;
+    const data = await database.query(sql, { type: QueryTypes.SELECT });
+
+    if (!data.length)
+      return { ok: true, data: [], message: "Chưa có thể loại nào" };
+
+    return { ok: true, data };
+  } catch (error) {
+    console.error("❌ Lỗi khi lấy danh sách thể loại:", error);
+    return { ok: false, status: 500, error: "Lỗi hệ thống khi lấy danh sách thể loại" };
+  }
+}
 module.exports = {
   timTruyenMoi,
   timTruyenHot,
   timTruyenTheoTheLoai,
   timTruyenTheoTuKhoa,
   layChiTietTruyen,
+  danhSachTheLoai,
 };

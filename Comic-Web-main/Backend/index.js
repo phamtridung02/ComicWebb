@@ -20,6 +20,7 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET || 'comicwebcookie';
 const app = express();
 
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -50,6 +51,7 @@ app.use('/admin', adminRouter);
 app.use('/baoCao', baoCaoRouter);
 app.use('/nguoiDung', nguoiDungRouter);
 app.use('/truyen', truyenRouter);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

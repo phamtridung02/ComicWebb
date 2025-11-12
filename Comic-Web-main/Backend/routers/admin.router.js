@@ -1,23 +1,24 @@
+const express = require('express');
+const router = express.Router(); 
 const { verifyAccessToken } = require('../middlewares/adminfilter.middleware');
 const controller = require('../controllers/admin.controller');
-const express = require('express');
 
+// Đăng nhập admin
 router.post('/dangNhap', controller.dangNhap);
-// => hanDung (hạn dùng của access token bằng tổng của Date.now() và thời gian sống của token), accessToken
+
+// Làm mới token
 router.get('/lamMoiAccessToken', controller.lamMoiAccessToken);
 
-// Yêu cầu Email trong body
-// => Gửi email chứa OTP đến email
+// Yêu cầu OTP để đặt lại mật khẩu
 router.post('/yeuCauOTPQuenMatKhau', controller.yeuCauOTPQuenMatKhau);
 
-// Yêu cầu Email, oldPassword (mật khẩu cũ), newPassword (mật khẩu mới), OTP (mã gửi đến email) trong body
+// Đặt lại mật khẩu bằng OTP
 router.post('/datLaiMatKhau', controller.datLaiMatKhau);
 
-// Yêu cầu access token trong header Authorization dạng 'Bearer [access token]', oldPassword (mật khẩu cũ), newPassword (mật khẩu mới) trong body
-// => refreshToken (trong cookie)
+// Đổi mật khẩu (yêu cầu token)
 router.post('/doiMatKhau', verifyAccessToken, controller.doiMatKhau);
 
-// Yêu cầu access token trong header Authorization dạng 'Bearer [access token]'
+// Đăng xuất (yêu cầu token)
 router.get('/dangXuat', verifyAccessToken, controller.dangXuat);
 
 module.exports = router;
